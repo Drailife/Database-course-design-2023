@@ -1,0 +1,306 @@
+{% extends "0_base.html" %}
+
+{% block title %}
+Purchase_From_Res
+{% endblock %}
+
+{% block block1%}
+
+{% endblock %}
+
+{% block body%}
+<!-- 展示用户点单界面 -->
+<div id="purchase" style="text-align: center; display:none;">
+    <h1 class="">
+        点单界面
+    </h1>
+    <hr class="my-4">
+    <button id="show_shopcurt" onclick="show_shop_curt()" class="btn btn-success"
+        style="margin-bottom: 10px;">显示购物车</button>
+    <div style="text-align: left;padding-left: 20px;">
+        {% for item in dataForPurchase %}
+        <div class="card" style="width: 15rem; display: inline-block;">
+            <img src="../static/img/2.jpg" class="card-img-top" alt="...">
+            <div class="card-body">
+                <div class="card-title" style="text-align: center;font-family: 'Times New Roman', Times, serif;">
+                    <font style="font-size: large;color: rgb(24, 130, 138);">{{item[1]}}</font>
+                    <font style="font-size:larger; color: rgb(255, 0, 0);margin-left: 20px;">
+                        ￥{{item[2]}} </font>
+                    </p>
+                </div>
+                <div class="card-title" style="color:rgb(20, 20, 20); font-size: 15px; text-align: center;">
+                    所属餐厅:&nbsp;{{item[0]}}&nbsp;&nbsp;&nbsp;&nbsp; 类别: &nbsp;{{item[3]}}
+                </div>
+                <div style="text-align: center;">
+                    <p class="btn btn-outline-danger bt_purchase_" style="width: 160px;" data-res_name="{{item[0]}}"
+                        data-food_name="{{item[1]}}" data-food_price="{{item[2]}}" data-food_kind="{{item[3]}}"
+                        data-description="{{item[4]}}">
+                        加入购物车
+                    </p>
+                </div>
+            </div>
+        </div>
+        {%endfor%}
+    </div>
+</div>
+
+<!-- 展示购物车界面 -->
+<div id="my_shopping_cart" style="text-align: center; display: none;">
+    <div class="" style="background-color: #e4e9f7;font-family: 'Times New Roman', Times, serif; margin-bottom: 20px;">
+        <div class="container">
+            <h1 class="display-4">Total_price</h1>
+            <h1 class="total_price" style="color:red;">￥{{total_price}}</h1>
+            <hr class="my-4">
+            <button onclick="show_purchase()" class="btn btn-outline-info btn-lg" style="width: 160px;">去点餐</button>
+            <a id="shopcart_cls" class="btn btn-outline-danger btn-lg" style="width: 160px;">清空购物车</a>
+            <a id="shopcart_purchase" class="btn btn-outline-primary btn-lg" style="width: 160px;">下单</a>
+        </div>
+    </div>
+    <table class="table">
+        <thead class="thead-light">
+            <tr>
+                <th scope="col">餐厅名称</th>
+                <th scope="col">食物名称</th>
+                <th scope="col">购买数量</th>
+                <th scope="col">总价格</th>
+                <th scope="col">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for items in shopping_cart_info%}
+            <tr>
+                {% for item in items%}
+                <td>{{item}}</td>
+                {% endfor %}
+                <td>
+                    <button class="btn btn-success btn_sub_food" style="font-size: large; width: 50px;"> 减1
+                    </button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+
+<!-- 展示我的订单界面 -->
+<div id="my_orders" style="text-align: center; display: none;">
+    <h1>
+        我的订单
+    </h1>
+    <hr class="my-4">
+    <table class="table">
+        <thead class="thead-light">
+            <tr>
+                <th scope="col">订单编号</th>
+                <th scope="col">总价格</th>
+                <th scope="col">实际花费</th>
+                <th scope="col">下单时间</th>
+                <th scope="col">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            {%for items in data_orders%}
+            <tr>
+                {% for item in items%}
+                <td> {{item}}</td>
+                {%endfor%}
+                <td><a class="btn btn-danger" data-type="orders" data-id="{{items[0]}}">Delete</a></td>
+            </tr>
+            {%endfor%}
+        </tbody>
+    </table>
+</div>
+
+<!-- 展示订单细则界面 -->
+<div id="my_orders_details" style="text-align: center; display: none;">
+    <h1>
+        订单细则
+    </h1>
+    <hr class="my-4">
+    <table class="table">
+        <thead class="thead-light">
+            <tr>
+                <th scope="col">用户名</th>
+                <th scope="col">订单编号</th>
+                <th scope="col">餐厅名称</th>
+                <th scope="col">食物名称</th>
+                <th scope="col">数量</th>
+                <th scope="col">下单时间</th>
+            </tr>
+        </thead>
+        <tbody>
+            {%for items in data_orders_detail%}
+            <tr>
+                {% for item in items%}
+                <td> {{item}}</td>
+                {%endfor%}
+
+            </tr>
+            {%endfor%}
+        </tbody>
+    </table>
+</div>
+
+<!-- 展示用户信息界面-->
+
+<div id="my_user_infos" style="text-align: left;display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content" style="width: 600px;border: none;background-color: #e4e9f7;">
+            <div class="modal-header" style="text-align:center;">
+                <h3 class="modal-title" id="staticBackdropLabel">个人信息</h3>
+            </div>
+            <div class="modal-body">
+                <form autocomplete="off" id="userinfoform" method="post">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="inputId">Usr_id</label>
+                            <input type="text" class="form-control" id="usrid" name="usr_id" value='{{user_infos[0]}}'
+                                readonly>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="inputName">Name</label>
+                            <input type="text" class="form-control form-control_" name="usr_name"
+                                value="{{user_infos[1]}}" required readonly>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label for="inputSex">Sex</label>
+                            <select class="form-control form-control_ custom-select mr-sm-2" id="Inpusex" name="sex"
+                                required disabled>
+                                <option selected value="{{user_infos[3]}}">{{user_infos[3]}}</option>
+                                <option value="男">男👦</option>
+                                <option value="女">女👧</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="inputAge">Age</label>
+                            <input type="number" class="form-control form-control_" value="{{user_infos[4]}}" id="age"
+                                name="age" required readonly>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="inputEmail">Email</label>
+                            <input type="mail" class="form-control form-control_" id="inputEmail" name="mail"
+                                value="{{user_infos[2]}}" placeholder="xxx@xx.com" required readonly>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="Password4">Password</label>
+                            <input type="text" class="form-control form-control_" id="Password4" name="password_"
+                                value="{{user_infos[7]}}" required readonly>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputAddress">Address</label>
+                        <input type="text" class="form-control form-control_" value="{{user_infos[6]}}"
+                            id="inputAddress" name="address_" required readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputTel">Telephone</label>
+                        <input type="number" class="form-control form-control_" value="{{user_infos[5]}}" id="inputTel"
+                            name="telephone" required readonly>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="quit" class="btn btn-outline-info submit_1"
+                            style="display:none; width: 120px;">Quit
+                            Edit</button>
+                        <button type="button" id="edit_button" class="btn btn-outline-info submit_1"
+                            style="width: 120px;">Edit</button>
+                        <button type="button" id="edit_submit" class="btn btn-outline-primary submit_1"
+                            style="display: none;width: 120px;">Submit</button>
+                    </div>
+                </form>
+                <iframe id="rfFrame" name="rfFrame" src="about:blank" style="display:none;"></iframe>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block script %}
+<script>
+    function show_shop_curt() { window.location.replace('/user_operate/shopping_cart'); }
+    function show_purchase() { window.location.replace('/user_operate/purchase'); }
+    //这一操作保证一个界面只显示一个菜单
+    var menu_id = "{{ menu_id }}";
+    if (menu_id === '1') { $('#purchase').show(); $('#my_shopping_cart').hide(); $('#my_orders').hide(); $('#my_orders_details').hide(); $('#my_user_infos').hide() }
+    else if (menu_id === '2') { $('#purchase').hide(); $('#my_shopping_cart').show(); $('#my_orders').hide(); $('#my_orders_details').hide(); $('#my_user_infos').hide() }
+    else if (menu_id === '3') { $('#purchase').hide(); $('#my_shopping_cart').hide(); $('#my_orders').show(); $('#my_orders_details').hide(); $('#my_user_infos').hide() }
+    else if (menu_id === '4') { $('#purchase').hide(); $('#my_shopping_cart').hide(); $('#my_orders').hide(); $('#my_orders_details').show(); $('#my_user_infos').hide() }
+    else { $('#purchase').hide(); $('#my_shopping_cart').hide(); $('#my_orders').hide(); $('#my_orders_details').hide(); $('#my_user_infos').show() }
+    $(document).ready(function () {
+        $(".bt_purchase_").click(function () {
+            var value = $(this)
+            columnData = [value.data('res_name'), value.data('food_name'), value.data('food_price'),
+            value.data('food_kind'), value.data('description')]
+            keys = ['res_name', 'food_name', 'price', 'kind', 'description_'];
+            // 创建字典
+            const result = keys.reduce((obj, key, index) => {
+                obj[key] = columnData[index];
+                return obj;
+            }, {});
+            $.post("/user_operate/add_to_shopcart", result, function (data) { alert(data); }); //发送数据
+        });
+        //购物车界面减少商品
+        $(".btn_sub_food").click(function () {
+            var tr = $(this).closest('tr'); //查找最近的tr元素
+            var tds = tr.find('td:not(:last-child)'); //查找除了最后一个td元素以外的所有td元素
+            var columnData = [];
+            tds.each(function () {
+                columnData.push($(this).text()); //获取每个td元素的文本内容
+            });
+            var jsonData = JSON.stringify({ "datas": columnData });
+            keys = ['res_name', 'food_name', 'num', 'total_price'];
+            // 创建字典
+            const result = keys.reduce((obj, key, index) => {
+                obj[key] = columnData[index];
+                return obj;
+            }, {});
+            console.log(result);
+            $.post("/user_operate/sub_from_shopcart", result, function (data) {
+                $('.total_price').val = data;
+                window.location.reload();
+            }); //发送数据
+        });
+        //购物车清空
+        $("#shopcart_cls").click(function () {
+            $.post("/user_operate/shopcurt/cls", null, function (data) { window.location.reload(); })
+        });
+        $("#shopcart_purchase").click(function () {
+            $.post("/user_operate/shopcurt/purchase",
+                { 'total_price': "{{total_price}}" },
+                function (data) { alert(data); if (data === '下单成功!') window.location.reload(); })
+        });
+        //编辑个人信息
+        $('#edit_button').click(function () {
+            $('#quit').show();
+            $('#edit_button').hide()
+            $('#edit_submit').show();
+            $('.form-control_').removeAttr('readonly').removeAttr('disabled');
+        })
+        $('#quit').click(function () {
+            $('#quit').hide();
+            $('#edit_button').show()
+            $('#edit_submit').hide();
+            $('.form-control_').prop('readonly', true).prop('disabled', true);
+            window.location.reload();
+        })
+        $('#edit_submit').click(function () {
+            $('#quit').hide();
+            $('#edit_button').show()
+            $('#edit_submit').hide();
+            var formdatas = $('#userinfoform').serialize()
+            $.post('/user_operate/edit_user', formdatas, function (data) {
+                alert(data);
+                $('.form-control_').prop('readonly', true).prop('disabled', true);
+                window.location.reload();
+            })
+        })
+    });
+
+
+</script>
+{% endblock %}

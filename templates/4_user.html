@@ -1,0 +1,340 @@
+{% extends "0_base.html" %}
+{% block title %}
+Data_User
+{% endblock %}
+
+{% block block1%}
+{% if user %}
+Hello {{user}}
+{% else %}
+点击右下角登录
+{% endif %}
+{% endblock %}
+
+{% block body%}
+<div style="text-align: center;" class="my_h1">
+    <h1>
+        USER--数据展示
+    </h1>
+</div>
+<div style="text-align: center; padding-bottom: 10px;">
+    <a href="/ShowInfo/user">
+        <button type="button" id="all_data" class="btn btn-success btn-lg">
+            ALL Datas
+        </button>
+    </a>
+    <button type="button" id="add_data" class="btn btn-outline-danger btn-lg" data-toggle="modal"
+        data-target="#add_hidden_form">
+        ADD
+    </button>
+
+    <button type="button" id="query" class="btn btn-info btn-lg" data-toggle="modal" data-target="#add_hidden_form">
+        Query
+    </button>
+    <button type="button" id="reset_data" class="btn btn-outline-danger btn-lg" data-toggle="modal"
+        data-target="#reset_hidden_form">
+        重置密码
+    </button>
+
+    <!-- 数据展示 -->
+</div>
+<div style="text-align: center;">
+    <table class=" table">
+        <thead class="thead-light">
+            <tr>
+                <th scope="col">USR_ID</th>
+                <th scope="col">USR_NAME</th>
+                <th scope="col">SEX</th>
+                <th scope="col">AGE</th>
+                <th scope="col">MAIL</th>
+                <th scope="col">PASSWORD</th>
+                <th scope="col">ADDRESS</th>
+                <th scope="col">TELEPHONT</th>
+                <th scope="col">OPERATION</th>
+            </tr>
+        </thead>
+        <tbody id='table_tbody'>
+            {% for item in datalist %}
+            <tr class="data_tr">
+                <td class="data_td" class="td_usr_id">{{item.usr_id}}</td>
+                <td class="data_td">{{item.usr_name}}</td>
+                <td class="data_td">{{item.sex}}</td>
+                <td class="data_td">{{item.age}}</td>
+                <td class="data_td">{{item.mail}}</td>
+                <td class="data_td">{{item.password_}}</td>
+                <td class="data_td">{{item.address_}}</td>
+                <td class="data_td">{{item.telephone}}</td>
+                <td id="operate_id">
+                    <button type="button" id="edit_data" class="btn btn-outline-primary btn_edit" data-toggle="modal"
+                        data-target="#add_hidden_form">
+                        Edit
+                    </button>
+                    <a class="btn btn-danger" data-type="user" data-id="{{item.usr_id}}">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<!-- Button trigger modal -->
+
+<!-- Modal 添加数据--表单-->
+<div class="modal fade" id="add_hidden_form" data-backdrop="static" data-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="width: 600px;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form autocomplete="off" id="myform" method="post">
+                    <div class="form-row">
+                        <div class="form-group col-md-3">
+                            <label for="inputId">Usr_id</label>
+                            <input type="text" class="form-control" id="usrid" name="usr_id" value='自动分配' readonly>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="inputName">Name</label>
+                            <input type="text" class="form-control form-control_" name="usr_name" required>
+                        </div>
+
+                        <div class="form-group col-md-3">
+                            <label for="inputSex">Sex</label>
+                            <select class="form-control form-control_ custom-select mr-sm-2" id="Inpusex" name="sex"
+                                required>
+                                <option selected value=""></option>
+                                <option value="男">男👦</option>
+                                <option value="女">女👧</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="inputAge">Age</label>
+                            <input type="number" class="form-control form-control_" id="age" name="age" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="inputEmail">Email</label>
+                            <input type="mail" class="form-control form-control_" id="inputEmail" name="mail"
+                                value="xx@xx.com" placeholder="xxx@xx.com" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="Password4">Password</label>
+                            <input type="password" class="form-control form-control_" id="Password4" name="password_"
+                                value="" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputAddress">Address</label>
+                        <input type="text" class="form-control form-control_" id="inputAddress" name="address_"
+                            required>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputTel">Telephone</label>
+                        <input type="number" class="form-control form-control_" id="inputTel" name="telephone" required>
+                    </div>
+                    <div class="form-row" style="display: none;">
+                        <div class="form-group col-md-2">
+                            <input type="text" class="is-invalid" id="usr_id_old_input" name="usr_id_old">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div style="padding-right: 250px;">
+                            <a id="cls" onclick="clear_data()" class="btn btn-info">Clear</a>
+                        </div>
+                        <button type="button" id="close_id" class="btn btn-secondary"
+                            data-dismiss="modal">Close</button>
+                        <button type="submit" id="submit" class="btn btn-primary submit_1">Submit</button>
+                    </div>
+                </form>
+                <iframe id="rfFrame" name="rfFrame" src="about:blank" style="display:none;"></iframe>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal 重置密码--表单---->
+<div class="modal fade" id="reset_hidden_form" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Reset Password</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body was-validated">
+                <form method="post" id="reset_form">
+                    <div class="form-group row">
+                        <label for="inputEmail3" class="col-sm-2 col-form-label">Usr id</label>
+                        <div class="col-sm-10">
+                            <input type="number" class="form-control" id="reset_usr_id" name="usr_id" required>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputPassword3" class="col-sm-2 col-form-label">Password</label>
+                        <div class="col-sm-10">
+                            <input type="password" class="form-control" id=" reset_password" name="password" required>
+                        </div>
+                    </div>
+                </form>
+                <iframe id="2_rfFrame" name="rfFrame" src="about:blank" style="display:none;"></iframe>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" id="reset_submit">Reset</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+    var usr_old_id = 0
+    const operate_html = $('#operate_id').html();
+    function clear_data() {
+        $('.form-control_').each(function () {
+            $(this).val('');
+        });
+    }
+    $(document).ready(function () {
+        $("#query").click(function () {
+            $("#usrid").attr("type", "number").val("1").removeAttr("readonly").addClass('form-control_');
+            $('.form-control_').removeAttr('required');
+            $('.modal-body').removeClass('was-validated');
+            $('input, select').removeClass('is-invalid');
+            $(".submit_1").attr("id", "query_submit");
+            $("#staticBackdropLabel").text("Query User");
+            clear_data();
+        });
+
+        $("#add_data").click(function () {
+            clear_data();
+            $("#usrid").attr("type", "text").val("自动分配").removeClass('form-control_').prop("readonly", true);
+            $(".submit_1").attr("id", "add_submit"); //根据类改ID
+            $("#staticBackdropLabel").text("ADD User");
+        });
+    });
+
+    //完成前端的添加提示
+    $(document).on('click', '#add_submit', function () {
+        var hasEmptyField = false;
+        $("#myform").attr("target", "rfFrame");
+        // $('.form-control_').each(function () {
+        //     if ($(this).val() === '') {
+        //         alert('请输入所有必填字段');
+        //         hasEmptyField = true;
+        //         return false;  // 跳出 each 循环
+        //     }
+        // });
+        if (hasEmptyField) { return false; }
+        var form_data = $('#myform').serialize(); // 获取表单数据
+        $.post("/update/add/user", form_data, function (data) {
+            location.reload();
+            alert(data);
+        }, "text");
+    });
+
+    $(document).on('click', '#query_submit', function () {
+        var form_data = $('#myform').serialize(); // 获取表单数据
+        $('.form-control_').prop('required', true);
+        $("#myform").attr("target", "rfFrame");
+        $.ajax({
+            method: 'post',
+            url: '/update/query/user',
+            dataType: 'json',
+            data: form_data,
+            success: function (data) {
+                // alert(data.request)
+                if (data.Success === 'N') { alert("无数据！"); }
+                else {
+                    $('#close_id').click();
+                    $('#table_tbody').empty();
+                    $.each(data, function (key, value) {
+
+                        if (key !== 'Success') {
+                            // alert(value.usr_name);
+                            var row = '<tr>'
+                                + '<td>' + value.usr_id + '</td>'
+                                + '<td>' + value.usr_name + '</td>'
+                                + '<td>' + value.mail + '</td>'
+                                + '<td>' + value.sex + '</td>'
+                                + '<td>' + value.age + '</td>'
+                                + '<td>' + value.telephone + '</td>'
+                                + '<td>' + value.address_ + '</td>'
+                                + '<td>' + value.password_ + '</td>'
+                                + '<td>' + operate_html + '</td>' + '</tr>';
+                            $('#table_tbody').append(row);
+                        }
+                    });
+                }
+            }
+        });
+    });
+
+    // 添加单击事件监听器到“编辑”按钮
+    $(".btn_edit").click(function (e) {
+        $("#usrid").attr("type", "number").prop("readonly", true).addClass('form-control_');
+        $(".submit_1").attr("id", "edit_submit"); //根据类改ID
+        $("#staticBackdropLabel").text("Edit User");
+        e.preventDefault();
+        // 获取所在行的数据
+        var data = $(this).closest("tr.data_tr").find(".data_td").map(function () {
+            return $(this).text();
+        }).get();
+        $('.form-control_').each(function (index) {
+            $(this).val(data[index]);
+        });
+        usr_old_id = $('#myform input[name="usr_id"]').val();
+        $('#usr_id_old_input').val(usr_old_id);
+    });
+    //Edit时候提交数据
+
+    $(document).on('click', '#edit_submit', function () {
+
+        var form_data = $('#myform').serialize(); // 获取表单数据
+        $("#myform").attr("target", "rfFrame");
+        $('#usr_id_old_input').val(usr_old_id);// 改ord_id
+        $.ajax({
+            type: "POST",
+            // url: "/update/edit/user",
+            url: "/user_operate/edit_user",
+            data: form_data,
+            dataType: "text",
+            success: function (response) {
+                alert(response);
+                // location.reload();
+                location.reload();
+            },
+            error: function (error) {
+                alert("请求失败！");
+            }
+        });
+    });
+    //点击提交reset 的 submit时执行
+    $(document).on('click', '#reset_submit', function () {
+
+        var form_data = $('#reset_form').serialize(); // 获取表单数据
+        if ($('#reset_usr_id').val() === '' || $('#reset_password').val() === '') { alert("请输入所有字段！"); return; }
+        $.ajax({
+            type: "POST",
+            url: "/update/reset_password",
+            data: form_data,
+            dataType: "text",
+            success: function (response) {
+                alert(response);
+                // location.reload();
+                location.reload();
+            },
+            error: function (error) {
+                alert("请求失败！");
+            }
+        });
+    });
+
+</script>
+{% endblock %}

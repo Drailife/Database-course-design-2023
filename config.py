@@ -1,0 +1,9 @@
+TEMPLATE_FOLDER = "./templates"
+STATIC_FOLDER = "./static"
+SECRET_KEY = 'kdj*&^&*hfusd'
+HOSTNAME = '127.0.0.1'
+PORT = 3306
+USERNAME = 'root'
+PASSWORD = 'awsl'
+DATABASE = '1_online_ordering'
+SQLALCHEMY_DATABASE_URI = f"mysql+pymysql://{USERNAME}:{PASSWORD}@{HOSTNAME}:{PORT}/{DATABASE}?charset=utf8"

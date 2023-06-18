@@ -1,0 +1,63 @@
+{% extends "0_base.html" %}
+{% block title %}
+Data_User
+{% endblock %}
+
+{% block block1%}
+{% if user %}
+Hello {{user}}
+{% else %}
+点击右下角登录
+{% endif %}
+{% endblock %}
+
+{% block body%}
+<div style="text-align: center;" class="my_h1">
+    <h1>
+        Orders_Details--数据展示
+    </h1>
+</div>
+<!-- <div style="text-align: center;">
+    <button type="button" id="query_orders_detail" class="btn btn-info btn-lg" data-toggle="modal" data-target="">
+        Query
+    </button>
+    <a href="/ShowInfo/orders_detail">
+        <button type="button" id="all_data" class="btn btn-success btn-lg" data-toggle="modal" data-target="">
+            ALL Datas
+        </button>
+    </a>
+    <button type="button" id="add_orders_detail" class="btn btn-outline-danger btn-lg" data-toggle="modal"
+        data-target="">
+        ADD
+    </button>
+</div> -->
+<div style="text-align: center;">
+    <table class=" table">
+        <thead class="thead-light">
+            <tr>
+                <th scope="col">ORDER_ID</th>
+                <th scope="col">RES_ID</th>
+                <th scope="col">FOOD_ID</th>
+                <th scope="col">NUM</th>
+                <th scope="col">OPERATION</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in datalist %}
+            <tr>
+                <td>{{item.order_id}}</td>
+                <td>{{item.res_id}}</td>
+                <td>{{item.food_id}}</td>
+                <td>{{item.num}}</td>
+                <td>
+                    <!-- <a href="/update/edit/orders_detail" class="btn btn-primary">Edit</a> -->
+                    <a class="btn btn-danger" data-type="orders_detail" data-id="{{item.order_id}}"
+                        data-id_2="{{item.res_id}}" data-id_3="{{item.food_id}}">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

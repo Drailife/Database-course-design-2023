@@ -1,0 +1,158 @@
+{% extends "0_base.html" %}
+{% block title %}
+index
+{% endblock %}
+
+{% block block1%}
+{% if user %}
+Hello {{user}}
+{% else %}
+点击右下角登录
+{% endif %}
+{% endblock %}
+
+{% block body%}
+<style>
+    td {
+        text-align: left;
+        font-size: 16px;
+    }
+
+    ul {
+        font-size: 19px;
+        color: red;
+    }
+
+    li {
+        font-size: 16px;
+    }
+
+    .candiv {
+        width: 300px;
+        height: 300px;
+        display: inline-block;
+    }
+
+    p {
+        font-size: larger;
+        color: blue;
+    }
+</style>
+<div class="jumbotron" style="color:rgb(99, 100, 122);">
+    <h1 class="display-4">Hello, world!</h1>
+    <a class="lead">数据库web界面</a>
+    <hr class="my-4">
+    <a>20281239 daibinbin 物联网2001班</a>
+    <div style="text-align: center;">
+        <button id="button" class="btn btn-outline-info" style="width: 200px; height: 50px;">显示功能</button>
+        <button id="button_1" class="btn btn-outline-danger"
+            style="width: 200px; height: 50px; margin-left: 30px;">关闭显示</button>
+    </div>
+    <div style="height: 30px; "></div>
+    <div style="display: none;" id='c'>
+        <table style="text-align: left;">
+            <thead>
+                <tr>
+                    <th>
+
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="text-align: left;">
+                        <ul>建立的表：</ul>
+
+                        <li>用户表(user)：记录用户的信息</li>
+                        <li>餐厅表(reataurant)：记录餐厅的相关信息</li>
+                        <li>食品表(foods)：记录食物的有关信息</li>
+                        <li>食品价格表(foods_price)：记录餐厅-价格-简介等信息</li>
+                        <li>购物车表(shopping_curt)：记录用户下单的食品</li>
+                        <li>订单表(orders)：记录每个订单的信息：</li>
+                        <li>订单详情表(orders_detail)：记录订单包含的详细信息</li>
+                        <li>操作日志表(User_Operate_logs):记录用户添加，删除和更新的操作</li>
+                    </td>
+                    <td>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;</td>
+                    <td>
+                        <ul>建立的视图：</ul>
+                        <li>Foods_available_for_purchase：用与呈现给用户点餐页面的视图，包含餐厅以及食物的详细信息。</li>
+                        <li>My_Orders_Detail_Info：用户餐厅的具体信息展示</li>
+                        <li>Orders_Detail_By_Usr_Id：用户订单细则</li>
+                        <li>ALL_FOODS_INFO：餐厅的所有的餐品信息</li>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <br>
+                        <ul> 存储过程：</ul>
+                        <li>ADDTOSHOPCART：执行用户添加商品到购物车的操作</li>
+                        <li>PURCHASE_FROM_SHOPPING_CURT：执行提交购物车的下单请求，完成像订单细则和订单表中插入数据</li>
+                        <li>RESET_PASSWORD：完成管理员重置用户密码的操作</li>
+                    </td>
+                    <td>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;</td>
+                    <td>
+                        <ul>触发器：</ul>
+                        <li>TIGGER_DELETE_USER：删除用户时在操作日志中生成记录</li>
+                        <li>TIGGER_INSERT_USER：插入用户时在操作日志中生成记录</li>
+                        <li>TIGGER_UPDATE_USER：更新用户时在操作日志中生成记录</li>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="candiv">
+            <br><br>
+            <p>基本功能</p>
+            <li>用户注册、登录</li>
+            <li>商家注册、登录</li>
+            <li>登出功能</li>
+            <li>违法数据的提示</li>
+        </div>
+        <div class="candiv">
+            <br><br>
+            <p>管理员功能</p>
+
+            <li>各个表数据的查看、删除和更新</li>
+            <li>用户密码的重置</li>
+            <li>用户数据查询的功能</li>
+            <li>数据库的备份和恢复</li>
+        </div>
+
+        <div class="candiv">
+            <br><br>
+            <p>普通用户功能</p>
+            <li>点餐</li>
+            <li>查看购物车</li>
+            <li>查看、更新个人信息</li>
+            <li>查看订单以及订单详情</li>
+        </div>
+        <div class="candiv">
+            <br><br>
+            <p>餐厅功能</p>
+            <li>添加、删除菜品</li>
+            <li>更新菜品</li>
+            <li>查看订单</li>
+            <li>查看及更新个人信息</li>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
+{% block script %}
+<script>
+    $('#button').click(function () {
+        $('#c').show();
+    })
+    $('#button_1').click(function () {
+        $('#c').hide();
+    })
+</script>
+{% endblock %}
+<!-- {% block sign %}
+{% if user %}
+<div class="profile_name"><a href="/login" style="color: aqua;">{{ user }}</a></div>
+{% else %}
+<div class="profile_name"><a href="/login" style="color: aqua;">Sign in</a></div>
+{% endif %}
+{%endblock%} -->

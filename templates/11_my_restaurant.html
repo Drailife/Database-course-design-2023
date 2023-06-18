@@ -1,0 +1,292 @@
+{% extends "0_base.html" %}
+{% block title %}
+My_restaurant
+{% endblock %}
+
+{% block block1%}
+
+Hello {{user}}
+
+
+{% endblock %}
+
+{% block body%}
+<!-- 我的餐厅界面 -->
+<div id="myres_foods">
+    <div style="text-align: center;">
+        <h2>
+            餐厅Id: {{res_id}}&nbsp;&nbsp; 餐厅名称:{{res_name}}
+        </h2>
+        <button id="res_add_foods" class="btn btn-outline-primary btn-lg" data-toggle="modal" data-target="#addResInfo"
+            style="width: 200px; height: 50px; margin-top: 30px;margin-bottom: 30px;">添加菜品</button>
+    </div>
+    <div style="text-align: center;">
+        <div style="text-align: left;padding-left: 20px;">
+            {% for item in datas %}
+            <div class="card" style="width: 15rem; display: inline-block;">
+                <img src="../static/img/del.png" class="del_res_food" data-food_id="{{item[1]}}"
+                    style="position: absolute;top: 0;right: 0;width: 30px;"></img>
+                <img src="../static/img/2.jpg" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <div class="card-title" style="text-align: center;font-family: 'Times New Roman', Times, serif;">
+                        <font style="font-size: large;color: rgb(24, 130, 138);">{{item[2]}}</font>
+                        <font style="font-size:larger; color: rgb(255, 0, 0);margin-left: 20px;">
+                            ￥{{item[3]}} </font>
+                        </p>
+                    </div>
+                    <div class="card-title" style="color:rgb(20, 20, 20); font-size: 15px; text-align: center;">
+                        简介:{{item[4]}}
+                    </div>
+                    <div style="text-align: center;">
+                        <button class="btn btn-outline-danger bt_edit_res" style="width: 160px;"
+                            data-res_id="{{res_id}}" data-food_id="{{item[1]}}" data-res_name="{{item[0]}}"
+                            data-food_name="{{item[2]}}" data-food_price="{{item[3]}}" data-description="{{item[4]}}"
+                            data-toggle="modal" data-target="#editResInfo">
+                            编辑
+                        </button>
+                    </div>
+                </div>
+            </div>
+            {%endfor%}
+        </div>
+    </div>
+</div>
+
+<!-- 我的订单界面 -->
+<div id="myres_orders" style="margin-top: 50px;">
+    <table class="table table-borderless">
+        <thead class="thead">
+            <tr class="">
+                <th scope="col">用户名</th>
+                <th scope="col">订单编号</th>
+                <th scope="col">餐厅名称</th>
+                <th scope="col">食物名称</th>
+                <th scope="col">数量</th>
+                <th scope="col">下单时间</th>
+            </tr>
+        </thead>
+        <tbody>
+            {%for items in data_orders_detail%}
+            <tr>
+                {% for item in items%}
+                <td> {{item}}</td>
+                {%endfor%}
+
+            </tr>
+            {%endfor%}
+        </tbody>
+    </table>
+</div>
+
+<!-- 餐厅信息界面 -->
+<div id="myres_info" style="width:500px;padding-top: 50px;">
+    <div class="card" style="background-color: #e4e9f7;border: none;">
+        <div class="card-body">
+            <div style="text-align: center;">
+                <h4 class="card-title">Restaurant Info</h4>
+            </div>
+            <form class="show_res_forms">
+                <div class="form-group">
+                    <label for="">Restaurant ID</label>
+                    <input type="text" class="form-control show_res" name="res_id" id="show_res_id"
+                        value="{{res_infos[0]}}" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="">Restaurant Name</label>
+                    <input type="text" class="form-control show_res" name="res_name" value="{{res_infos[1]}}" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="">Email address</label>
+                    <input type="email" class="form-control show_res" name="mail" value="{{res_infos[2]}}" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="">Telepphone</label>
+                    <input type="tel" class="form-control show_res" name="tel" value="{{res_infos[3]}}" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="">Address</label>
+                    <input type="tel" class="form-control show_res" name="address" value="{{res_infos[4]}}" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="">Password</label>
+                    <input type="text" class="form-control show_res" name="password" value="{{res_infos[5]}}" readonly>
+                </div>
+                <div style="text-align: right;">
+                    <button type="button" id="show_res_edit" class="btn btn-outline-info mr-2">Edit</button>
+                    <button type="button" id="show_res_submit" class="btn btn-outline-primary mr-2">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- 修改表单 -->
+<!-- Modal -->
+<div class="modal fade" id="editResInfo" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">修改信息</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="post" id="edit_res_form">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">餐品ID</label>
+                        <input type="text" id="foodid" class="form-control" name="food_id" readonly>
+                        <small>自动分配</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">餐品名称</label>
+                        <input type="text" class="form-control" name="food_name" id="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">餐品价格</label>
+                        <input type="text" pattern="[0-9]*[.]?[0-9]?[0-9]?" class="form-control" name="price"
+                            aria-describedby="emailHelp" id="price" required>
+                        <small>输入不超过两位小数的浮点数字</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">简介</label>
+                        <input type="text" class="form-control" name="desc" id="desc" required>
+                    </div>
+                </form>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary submit_type" id="edit_submit">Submit</a=>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 添加表单 -->
+<div class="modal fade" id="addResInfo" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">添加信息</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="post" id="add_res_form">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">餐品ID</label>
+                        <input type="text" id="foodid" class="form-control" name="food_id_" readonly>
+                        <small>自动分配</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">餐品名称</label>
+                        <input type="text" class="form-control" name="food_name" id="name_" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">餐品价格</label>
+                        <input type="text" pattern="[0-9]*[.]?[0-9]?[0-9]?" class="form-control" name="price"
+                            aria-describedby="emailHelp" id="price_" required>
+                        <small>输入不超过两位小数的浮点数字</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">简介</label>
+                        <input type="text" class="form-control" name="desc" id="desc_" required>
+                    </div>
+                </form>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="add_submit">Submit</a=>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock%}
+
+
+{% block script %}
+<script>
+    var menu_id = "{{ menu_id }}";
+    if (menu_id === '1') { $('#myres_foods').show(); $('#myres_orders').hide(); $('#myres_info').hide(); }
+    else if (menu_id === '2') { $('#myres_foods').hide(); $('#myres_orders').show(); $('#myres_info').hide(); }
+    else if (menu_id === '3') { $('#myres_foods').hide(); $('#myres_orders').hide(); $('#myres_info').show(); }
+    function empty_form(data) {
+        $(data).each(function () {
+            if ($(this).val() === '') {
+                alert('请输入所有必填字段');
+                hasEmptyField = true;
+                return false;  // 跳出 each 循环
+            }
+        });
+        if (hasEmptyField) { return false; }
+    }
+    $(document).ready(function () {
+        $('.bt_edit_res').click(function () {
+            $('#foodid').val($(this).data('food_id'));
+            // alert($(this).data('food_name'));
+            $('#name').val($(this).data('food_name'));
+            $('#price').val($(this).data('food_price'));
+            $('#desc').val($(this).data('description'));
+        });
+
+        $('#res_add_foods').click(function () {
+            $(':input', '#add_res_form').val('') //表单复用，清空数据
+        });
+        //编辑提交
+        $('#edit_submit').click(function () {
+            var inputValue = $('#price').val();
+            // 定义正则表达式，匹配不超过两位小数的数值
+            var reg = /^([1-9]\d*|0)(\.\d{1,2})?$/;
+            if (reg.test(inputValue)) {
+                var form_data = $('#edit_res_form').serialize(); // 获取表单数据
+                $.post("/res_operate/edit_foods", form_data, function (data) {
+                    alert(data);
+                    window.location.reload();
+                }); //发送数据
+            }
+            else { alert('价格输入格式不正确') };
+        });
+        //添加提交
+        $('#add_submit').click(function () {
+            var inputValue = $('#price_').val();
+            // 定义正则表达式，匹配不超过两位小数的数值
+            var reg = /^([1-9]\d*|0)(\.\d{1,2})?$/;
+            if (reg.test(inputValue)) {
+                var form_data = $('#add_res_form').serialize(); // 获取表单数据
+                $.post("/res_operate/add_foods", form_data, function (data) {
+                    if (data !== 'success')
+                        alert(data);
+                    window.location.reload();
+                }); //发送数据
+            }
+            else { alert('价格输入格式不正确') };
+        });
+        //删除food 
+        $('.del_res_food').click(function () {
+            var data = $(this).data('food_id')
+            datas = { 'food_id': data }
+            $.post("/res_operate/del_foods", datas, function (data) {
+                alert(data);
+                window.location.reload();
+            }); //发送数据
+        });
+
+        //餐厅信息修改
+        $('#show_res_edit').click(function () {
+            $('.show_res').removeAttr('readonly');
+            $('#show_res_id').prop('readonly', true)
+        })
+        //餐厅信息修改提交
+        $('#show_res_submit').click(function () {
+            $('.show_res').prop("readonly", true);
+            var form_data = $('.show_res_forms').serialize(); // 获取表单数据
+            $.post("/res_operate/eitd_res_infos", form_data, function (data) {
+                if (data !== 'success')
+                    alert(data);
+                else
+                    window.location.reload();
+            })
+        })
+    });
+</script>
+{% endblock %}

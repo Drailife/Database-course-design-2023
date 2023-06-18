@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<!-- Designined by CodingLab | www.youtube.com/codinglabyt -->
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="UTF-8">
+  <title>
+    {% block title %}{% endblock %}
+  </title>
+  <link rel="stylesheet" href="../static/css/index_style.css">
+  <link rel="stylesheet" href="../static/css/login.css">
+  <!-- <link rel="stylesheet" href="../static/css/loginnew.css"> -->
+  <!-- Boxiocns CDN Link -->
+  <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+  <!-- <link rel="stylesheet" href="../static/css/boxicons.min.css" rel="stylesheet"> -->
+  <link rel="stylesheet" href="../static/css/bootstrap.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body style="background-color: #e4e9f7;">
+  <!-- 该句话用于标识当前的用户类型，有 admin user res三个值 -->
+  <p id='user_type' style="display: none;">{{ type }}</p>
+  <div class="sidebar">
+    <div class="logo-details">
+      <a href="/">
+        <i class='bx bx-accessibility'></i>
+        <span class="logo_name">20281239 戴斌斌</span>
+      </a>
+    </div>
+    <ul class="nav-links">
+      <div id="ul_admin" style="display: none;">
+        <li>
+          <a href="/">
+            <i class='bx bx-grid-alt'></i>
+            <span class="link_name">Home</span>
+          </a>
+        </li>
+        <li>
+          <div class="iocn-link">
+            <a href="/ShowInfo/user" class="a_weight">
+              <i class='bx bx-collection'></i>
+              <span class="link_name" id="user_id" data-admin="{{user}}">User</span>
+            </a>
+            <!-- <i class='bx bxs-chevron-down arrow'></i> -->
+          </div>
+
+        </li>
+        <li>
+          <div class="iocn-link" style="display: none;">
+            <a href="/ShowInfo/vip" class="a_weight">
+              <i class='bx bx-book-alt'></i>
+              <span class="link_name">Vip</span>
+            </a>
+          </div>
+        </li>
+        <li>
+          <a href="/ShowInfo/restaurant" class="a_weight">
+            <i class='bx bx-pie-chart-alt-2'></i>
+            <span class="link_name">Restaurant</span>
+          </a>
+        </li>
+        <li>
+          <a href="/ShowInfo/foods" class="a_weight">
+            <i class='bx bx-line-chart'></i>
+            <span class="link_name">Foods</span>
+          </a>
+        </li>
+        <li>
+          <div class="iocn-link">
+            <a href="/ShowInfo/foods_price" class="a_weight">
+              <i class='bx bx-plug'></i>
+              <span class="link_name">Foods_Price</span>
+            </a>
+            <!-- <i class='bx bxs-chevron-down arrow'></i> -->
+          </div>
+        </li>
+        <li>
+          <a href="/ShowInfo/orders" class="a_weight">
+            <i class='bx bx-compass'></i>
+            <span class="link_name">Orders</span>
+          </a>
+        </li>
+        <li>
+          <a href="/ShowInfo/orders_detail" class="a_weight">
+            <i class='bx bx-history'></i>
+            <span class="link_name">Orders_Detail</span>
+          </a>
+        </li>
+        <li>
+          <a href="/ShowInfo/user_log" class="a_weight">
+            <i class='bx bx-book-alt'></i>
+            <span class="link_name">User Log</span>
+          </a>
+        </li>
+        <li>
+          <a href="/ShowInfo/setting" class="a_weight">
+            <i class='bx bx-cog'></i>
+            <span class="link_name">Setting</span>
+          </a>
+        </li>
+      </div>
+      <!-- 用户点餐 -->
+      <div class="nav-links" id="ul_user">
+        <li class="user_li" style="display: none;">
+          <a href="/user_operate/purchase" id="base_purchase">
+            <i class='bx bx-grid-alt'></i>
+            <span class="link_name">点餐</span>
+          </a>
+        </li>
+        <li class="user_li" style="display: none;">
+          <a href="/user_operate/shopping_cart" id="base_shopcart">
+            <i class='bx bx-grid-alt'></i>
+            <span class="link_name">购物车</span>
+          </a>
+        </li>
+        <li class="user_li" style="display: none;">
+          <a href="/user_operate/my_orders" id="base_myorders">
+            <i class='bx bx-grid-alt'></i>
+            <span class="link_name">我的订单</span>
+          </a>
+        </li>
+        <li class="user_li" style="display: none;">
+          <a href="/user_operate/my_orders_details" id="base_myorders_detail">
+            <i class='bx bx-grid-alt'></i>
+            <span class="link_name">订单细则</span>
+          </a>
+        </li>
+        <li class="user_li" style="display: none;">
+          <a href="/user_operate/user_infos" id="base_user_infos">
+            <i class='bx bx-grid-alt'></i>
+            <span class="link_name">个人信息</span>
+          </a>
+        </li>
+        <!-- 商家页面 -->
+        <li class="res_li" style="display: none;">
+          <a href="/res_operate/my_restaurant">
+            <i class='bx bx-grid-alt'></i>
+            <span class="link_name">餐厅菜品</span>
+          </a>
+        </li>
+        <!-- <li class="res_li">
+          <a id="res_add_foods" data-toggle="modal" data-target="#addResInfo">
+            <i class='bx bx-grid-alt'></i>
+            <span class="link_name">添加菜品</span>
+          </a>
+        </li> -->
+        <li class="res_li" style="display: none;">
+          <a href="/res_operate/myres_orders">
+            <i class='bx bx-grid-alt'></i>
+            <span class="link_name">我的订单</span>
+          </a>
+        </li>
+        <li class="res_li" style="display: none;">
+          <a href="/res_operate/myres_info">
+            <i class='bx bx-grid-alt'></i>
+            <span class="link_name">餐厅信息</span>
+          </a>
+        </li>
+      </div>
+
+      <li>
+        <div class="profile-details">
+          <div class="profile-content">
+            <img src="../static/img/1.jpg" alt="profile">
+          </div>
+          <div class="name-job">
+            {% if user %}
+            <div class="profile_name"><a style="color: aqua;">{{ user }}</a></div>
+            {% else %}
+            <div class="profile_name"><a data-toggle="modal" id="signinbutton" data-target="#loginshow"
+                style="color: aqua;">Sign in</a>
+            </div>
+            {% endif %}
+            <!-- <div class="profile_name"><a href="/login" style="color: aqua;">Sign in</a></div> -->
+            <div class="job">🐲🐼👻🦩</div>
+          </div>
+          <a href="/login/logout"><i class='bx bx-log-out'></i></a>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- 内容 -->
+  <div id="dataid" d="{{data}}" style="display:none"></div>
+  <section class="home-section">
+    <div class="home-content">
+      <span style="width: 30px;"></span>
+      <span class="text">{% block block1 %}{% endblock %}</span>
+    </div>
+    <!-- 登录界面 -->
+    <div class="modal fade" id="loginshow" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header"
+            style="padding: 1.1rem 1rem; background-image: url('/static/img/login_background_top.jpg');"
+            style="border:none">
+            <h5 class="modal-title" id="exampleModalLabel" style="border: none;"></h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true" style="border: none;">&times;</span>
+            </button>
+          </div>
+          <div class="login-left">
+
+            <div class=" header" style="margin-left: 20px;">Sign up</div>
+            <div style="padding-left: 80px; padding-top: 20px;">
+              <button type="button" id="user_sign" class="btn btn-success" data-toggle="modal"
+                data-target="#add_hidden_form" style="width: 120px;height: 40px;border-radius: 25px;">
+                用户注册
+              </button>
+            </div>
+            <div style="padding-left: 80px;padding-top: 40px;">
+              <button type="button" id="res_sign" class="btn btn-primary" data-toggle="modal"
+                data-target="#res_hidden_form" style="width: 120px;height: 40px;border-radius: 25px;">
+                商家注册
+              </button>
+            </div>
+          </div>
+          <!-- <div class=" login-left"">1111</div> -->
+          <div class=" login-wrapper1">
+            <div style="text-align: center; ">
+              <div class="header" style="margin-left: 10px;">Sign in</div>
+            </div>
+            <div class="form-wrapper">
+              <form method="post" id="login_form" action="/login/usr">
+                <input type="text" name="mail" placeholder="mail" class="input-item" style="margin-top: 20px;">
+                <input type="password" name="password" placeholder="password" class="input-item">
+                <div style="padding-top: 10px;">
+                  <span style="padding-left: 10px;">
+                    <button type="submit" class="btn btn-outline-dark" id="login"
+                      style="border-radius: 20px; height: 40px;">用户登录</button>
+                  </span>
+                  <span style="padding-left: 8px;">
+                    <button type=" button" class="btn btn-outline-light" id="res_login"
+                      style="border-radius: 20px; height: 40px;">商家登录</button>
+                  </span>
+                </div>
+              </form>
+              <br>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% block body %}{%endblock%}
+    <!-- <button data-toggle="modal" data-target="#loginshow">login</button> -->
+  </section>
+  <!-- 注册及其他表单 -->
+  <!-- 用户注册的表单 -->
+  <div class="modal fade" id="add_hidden_form" data-backdrop="static" data-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form autocomplete="off" id="myform" method="post">
+            <div class="form-row">
+              <div class="form-group col-md-3">
+                <label for="inputId">Usr_id</label>
+                <input type="text" class="form-control" id="usrid" name="usr_id" value='自动分配' readonly>
+              </div>
+              <div class="form-group col-md-3">
+                <label for="inputName">Name</label>
+                <input type="text" class="form-control form-control_" name="usr_name" required>
+              </div>
+
+              <div class="form-group col-md-3">
+                <label for="inputSex">Sex</label>
+                <select class="form-control form-control_ custom-select mr-sm-2" id="Inpusex" name="sex" required>
+                  <option selected value=""></option>
+                  <option value="男">男👦</option>
+                  <option value="女">女👧</option>
+                </select>
+              </div>
+              <div class="form-group col-md-3">
+                <label for="inputAge">Age</label>
+                <input type="number" class="form-control form-control_" id="age" name="age" required>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="inputEmail">Email</label>
+                <input type="mail" class="form-control form-control_" id="usrmailinput" name="mail" value=""
+                  placeholder="xxx@xx.com" required>
+              </div>
+              <div class="form-group col-md-6">
+                <label for="Password4">Password</label>
+                <input type="password" class="form-control form-control_" id="usrpasswordinput" name="password_"
+                  value="" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="inputAddress">Address</label>
+              <input type="text" class="form-control form-control_" id="inputAddress" name="address_" required>
+            </div>
+            <div class="form-group">
+              <label for="inputTel">Telephone</label>
+              <input type="number" class="form-control form-control_" id="inputTel" name="telephone" required>
+            </div>
+            <div class="form-row" style="display: none;">
+              <div class="form-group col-md-2">
+                <input type="text" class="is-invalid" id="usr_id_old_input" name="usr_id_old">
+              </div>
+            </div>
+            <div class="modal-footer">
+              <div style="padding-right: 250px;">
+                <a id="cls" onclick="clear_data()" class="btn btn-info">Clear</a>
+              </div>
+              <button type="button" id="close_id" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="submit" id="submit_user_sign" class="btn btn-primary submit_1">Submit</button>
+            </div>
+          </form>
+          <iframe id="rfFrame" name="rfFrame" src="about:blank" style="display:none;"></iframe>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- 商家注册的表单 -->
+  <div class="modal fade" id="res_hidden_form" data-backdrop="static" data-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form autocomplete="off" id="resform" action="/update/add/res" method="post">
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="inputId">Res_id</label>
+                <input type="text" class="form-control" id="resid" name="res_id" value='自动分配' readonly>
+              </div>
+              <div class="form-group col-md-6">
+                <label for="inputName">Res Name</label>
+                <input type="text" class="form-control" name="res_name" required>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="inputEmail">Res Email</label>
+                <input type="mail" class="form-control" id="resmailbutton" name="mail" placeholder="xxx@xx.com"
+                  required>
+              </div>
+              <div class="form-group col-md-6">
+                <label for="Password4">Password</label>
+                <input type="password" class="form-control" id="respasswordbutton" name="password_" value="" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="inputAddress">Address</label>
+              <input type="text" class="form-control" id="inputAddress" name="address_" required>
+            </div>
+            <div class="form-group">
+              <label for="inputTel">Telephone</label>
+              <input type="number" class="form-control" id="inputTel" name="telephone" required>
+            </div>
+            <div class="modal-footer">
+              <button type="button" id="close_id" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" id="submit_res_sign" class="btn btn-primary">Submit</button>
+            </div>
+          </form>
+          <iframe id="rfFrame" name="rfFrame" src="about:blank" style="display:none;"></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
+  <script src="../static/js/jquery-3.6.4.min.js"></script>
+  <script src="../static/js/bootstrap.min.js"></script>
+
+  {% block script %} {% endblock %}
+  <script>
+    // 保证三种不同的用户有不同的选项
+    type = $('#user_type').text();
+
+    if (type === 'res') { $('.res_li').show(); $('#ul_admin').hide(); $('.user_li').hide(); }
+    else if (type === 'user') { $('.user_li').show(); $('#ul_admin').hide(); $('.res_li').hide(); }
+    else { $('#ul_admin').show(); $('.res_li').hide(); $('.user_li').hide(); }
+
+    // 实现删除提示
+    $(document).on('click', '.btn-danger', function () {
+      if (!confirm("是否删除？")) {
+        return;
+      }
+      const item_id = $(this).data('id');
+      const item_id_2 = $(this).data('id_2');
+      const item_id_3 = $(this).data('id_3');
+      //根据type类型 以及 id 号 删除数据
+      $.ajax({
+        type: 'POST',
+        url: '/update/delete/' + $(this).data('type') + '/' + $(this).data('id'),
+        data: { 'item_id': item_id, 'item_id_2': item_id_2, 'item_id_3': item_id_3 },
+        success: function (data) {
+          // location.reload();
+          $("#myform").attr("target", "rfFrame");
+          if (data.result !== 'Delete Success!') { alert(data.result); }
+          else { location.reload(); }
+        },
+        error: function () {
+          alert('请求失败' + url);
+        }
+      });
+    });
+    //实现登录提示
+    $(document).on('click', '.a_weight', function () {
+      var item_status = $("#user_id").data('admin');
+      if (item_status === 'None') {
+        alert('请先登录账号');
+      }
+      if (item_status !== 'admin') {
+        if (item_status !== 'None') {
+          confirm("请登录管理员账号")
+        }
+      }
+    });
+  </script>
+  <!-- 实现登录 -->
+  <script>
+    function clear_data() {
+      $('.form-control_').each(function () {
+        $(this).val('');
+      });
+    }
+    //完成前端的添加提示
+    $(document).on('click', '#submit_user_sign', function () {
+      var hasEmptyField = false;
+      $("#myform").attr("target", "rfFrame");
+      $('.form-control_').each(function () {
+        if ($(this).val() === '') {
+          alert('请输入所有必填字段');
+          hasEmptyField = true;
+          return false;  // 跳出 each 循环
+        }
+      });
+      if (hasEmptyField) { return false; }
+      var form_data = $('#myform').serialize(); // 获取表单数据
+      $.post("/update/add/user", form_data, function (data) {
+        location.reload();
+        alert(data);
+      }, "text");
+    });
+    //商家登录
+    $(document).on('click', '#res_login', function () {
+      var form_data = $('#login_form').serialize(); // 获取表单数据
+      $.post("/login/res", form_data, function (data) {
+        location.reload();
+        if (data !== "success")
+          alert(data);
+        else
+          window.location.replace("/");
+      }, "text");
+    });
+    $(document).on('click', '#submit_res_sign', function () {
+      var form_data = $('#resform').serialize(); // 获取表单数据
+      $.post("/update/add/res", form_data, function (data) {
+        location.reload();
+        if (data !== "success")
+          alert(data);
+        else
+          window.location.replace("/");
+      }, "text");
+    });
+    $(document).on('click', '#signinbutton', function () {
+      $('#usrmailinput').val('');
+      $('#usrpasswordinput').val('');
+      $('#resmailinput').val('');
+      $('#respasswordinput').val('');
+    })
+  </script>
+</body>
+
+</html>

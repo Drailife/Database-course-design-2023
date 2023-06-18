@@ -1,0 +1,44 @@
+{% extends "0_base.html" %}
+{% block title %}
+Data_User
+{% endblock %}
+
+{% block block1%}
+{% if user %}
+Hello {{user}}
+{% else %}
+点击右下角登录
+{% endif %}
+{% endblock %}
+
+{% block body%}
+<div style="text-align: center;" class="my_h1">
+    <h1>
+        用户操作日志
+    </h1>
+</div>
+
+
+
+<table class="table">
+    <thead class="thead-light">
+        <tr>
+            <th scope="col">LOG ID</th>
+            <th scope="col">OPERATION</th>
+            <th scope="col">TIME</th>
+            <th scope="col">OPERATE USER ID</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for items in datalist %}
+        <tr>
+            {%for item in items%}
+            <td>{{item}}</td>
+            {%endfor%}
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+{% endblock %}

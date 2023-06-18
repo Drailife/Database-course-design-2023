@@ -1,0 +1,39 @@
+{% extends "0_base.html" %}
+{% block title %}
+index
+{% endblock %}
+
+{% block block1%}
+{% if user %}
+Hello {{user}}
+{% else %}
+点击右下角登录
+{% endif %}
+{% endblock %}
+
+{% block body%}
+
+<div style="text-align: center;">
+    <div style="padding-top: 100px;">
+        <button class="btn btn-success" id="backup" style="width: 200px; height: 50px;">数据库备份</button>
+    </div>
+    <div style="padding-top: 100px;">
+        <button class="btn btn-info" id="recover" style="width: 200px;height: 50px;">数据库恢复</button>
+    </div>
+</div>
+
+{% endblock %}
+{% block script %}
+<script>
+    $('#backup').click(function () {
+        $.post('/user_operate/backup', null, function (data) {
+            alert(data);
+        })
+    });
+    $('#recover').click(function () {
+        $.post('/user_operate/recover', null, function (data) {
+            alert(data);
+        })
+    })
+</script>
+{% endblock %}
